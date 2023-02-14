@@ -6,6 +6,7 @@ With the current outline by itself, outlines are added to the active layer and a
 
 Outlines generated here are in a locked layer so don't worry about accidentally drawing on it.
 
+https://user-images.githubusercontent.com/4659170/218849188-1fded15c-9d9d-48b7-9b34-3655c8e87446.mp4
 
 ## Setup & Usage
 
@@ -29,3 +30,5 @@ I HIGHLY recommend adding these actions to your hotkeys!!
 - <b>outlineGroupName:</b> Change the name of the outline group
 - <b>GetOutlineColor:</b> Override this to change the generated outline color
 - <b>ExecuteOutlineCreation:</b> Configure this to get the exact outline behavior you want
+
+
