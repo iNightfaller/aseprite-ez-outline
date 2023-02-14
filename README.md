@@ -1,4 +1,5 @@
-# aseprite-ez-outline
+# Aseprite EZ Outline
+
 Easily create and remove non-intrusive outlines which follow an outline standard for your sprites. 
 
 With the current outline by itself, outlines are added to the active layer and are baked in. This means if you want to make minor edits and then re-outline, you must delete the entire outline and then re-run the outline tool, or do the outlines by hand. _gross_!
