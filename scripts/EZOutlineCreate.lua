@@ -68,7 +68,7 @@ function ProcessLayer(sprite, outlineGroup, layers)
 			
 			-- If there are any pixels to outline, run the outline commands
 			if hasPixels then
-				ExecuteOutlineCreation(outlineColor)
+				--ExecuteOutlineCreation(outlineColor)
 			end
 		end
 	end
@@ -94,11 +94,25 @@ function ProcessSprite(sprite)
 	outlineGroup.isCollapsed = true
 	outlineGroup.stackIndex = 0
 	
-	-- Start processing on the sprite's layers
-	ProcessLayer(sprite, outlineGroup, sprite.layers)
+	prevActiveLayer = app.activeLayer
+	prevActiveFrame = app.activeFrame
+	
+	-- Go through each frame
+	for i,frame in ipairs(sprite.frames) do
+		app.activeFrame = frame
+		-- Start processing on the sprite's layers
+		ProcessLayer(sprite, outlineGroup, sprite.layers)
+	end
 	
 	-- Finally make the outline un-editable
 	outlineGroup.isEditable = false
+	
+	if prevActiveLayer ~= nil then
+		app.activeLayer = prevActiveLayer
+	end
+	if prevActiveFrame ~= nil then
+		app.activeFrame = prevActiveFrame
+	end
 end
 
 
