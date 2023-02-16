@@ -88,14 +88,14 @@ function ProcessSprite(sprite)
 		sprite:deleteLayer(layer)
 	end
 	
+	prevActiveLayer = app.activeLayer
+	prevActiveFrame = app.activeFrame
+	
 	-- Create the new outline group
 	outlineGroup = sprite:newGroup()
 	outlineGroup.name = outlineGroupName
 	outlineGroup.isCollapsed = true
 	outlineGroup.stackIndex = 0
-	
-	prevActiveLayer = app.activeLayer
-	prevActiveFrame = app.activeFrame
 	
 	-- Go through each frame
 	for i,frame in ipairs(sprite.frames) do
