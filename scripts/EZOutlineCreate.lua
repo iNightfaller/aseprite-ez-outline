@@ -31,11 +31,13 @@ function ExecuteOutlineCreation(outlineColor)
 	}
 end
 
-function ProcessLayer(sprite, outlineGroup, layers)
+function ProcessLayer(sprite, outlineGroup, layers, frameNumber)
 	-- Find layers to outline
 	toOutline = {}
 	for i,layer in ipairs(layers) do
-		table.insert(toOutline, layer)
+		if layer ~= outlineGroup then
+			table.insert(toOutline, layer)
+		end
 	end
 	
 	local rgbaA = app.pixelColor.rgbaA
@@ -45,7 +47,7 @@ function ProcessLayer(sprite, outlineGroup, layers)
 	for i,layer in ipairs(toOutline) do
 		-- If this is a group, then traverse inside of it
 		if layer.isGroup then
-			ProcessLayer(sprite, outlineGroup, layer.layers)
+			ProcessLayer(sprite, outlineGroup, layer.layers, frameNumber)
 		else
 			-- Create a new layer
 			app.activeLayer = layer
@@ -54,9 +56,12 @@ function ProcessLayer(sprite, outlineGroup, layers)
 			outlineLayer.name = layer.name
 			outlineLayer.parent = outlineGroup
 			
-			-- Make all of the existing pixels the same color as the outline
-			hasPixels = false
-			for i,cel in ipairs(outlineLayer.cels) do
+			-- Make all of the existing pixels the same color as the outline = false=
+			
+			cel = outlineLayer:cel(frameNumber)
+			if cel ~= nil then
+				hasPixels = false
+				-- Check for any colored pixels to outline
 				for it in cel.image:pixels() do
 					alpha = rgbaA(it())
 					if alpha ~= 0 then
@@ -64,11 +69,11 @@ function ProcessLayer(sprite, outlineGroup, layers)
 						hasPixels = true
 					end
 				end
-			end
-			
-			-- If there are any pixels to outline, run the outline commands
-			if hasPixels then
-				--ExecuteOutlineCreation(outlineColor)
+				-- If this has pixels, then create the outline
+				if hasPixels then
+					app.activeCel = cel
+					ExecuteOutlineCreation(outlineColor)
+				end
 			end
 		end
 	end
@@ -101,11 +106,12 @@ function ProcessSprite(sprite)
 	for i,frame in ipairs(sprite.frames) do
 		app.activeFrame = frame
 		-- Start processing on the sprite's layers
-		ProcessLayer(sprite, outlineGroup, sprite.layers)
+		ProcessLayer(sprite, outlineGroup, sprite.layers, i)
 	end
 	
 	-- Finally make the outline un-editable
 	outlineGroup.isEditable = false
+	outlineGroup.isCollapsed = true
 	
 	if prevActiveLayer ~= nil then
 		app.activeLayer = prevActiveLayer
